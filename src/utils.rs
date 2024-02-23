@@ -27,7 +27,3 @@ impl AsRoute for String {
         self.into()
     }
 }
-
-// pub fn redirect_to(record: impl AsRoute) -> tide::Response {
-//     tide::Redirect::new(record.as_route()).into()
-// }

@@ -3,8 +3,8 @@ use sqlx::sqlite::SqlitePool;
 use std::{env, time::Duration};
 use tide::{sessions::SessionMiddleware, Redirect};
 
-pub mod records;
 mod templates;
+pub mod tideys;
 
 mod routes;
 mod utils;
@@ -42,24 +42,25 @@ async fn main() -> tide::Result<()> {
 
     app.with(build_session_middleware(db).await?);
 
-    app.at("/").get(Redirect::new("/welcome"));
+    app.at("/").get(Redirect::new("/home"));
 
+    app.at("/home").get(routes::home);
     app.at("/welcome").get(routes::welcome);
 
-    let mut articles = app.at("/articles");
+    let mut tideys = app.at("/tideys");
 
-    articles
-        .post(routes::articles::create)
-        .get(routes::articles::index);
+    tideys
+        .post(routes::tideys::create)
+        .get(routes::tideys::index);
 
-    articles.at("/new").get(routes::articles::new);
+    tideys.at("/new").get(routes::tideys::new);
 
-    articles
-        .at("/:article_id")
-        .get(routes::articles::show)
-        .delete(routes::articles::delete)
-        .put(routes::articles::update)
-        .post(routes::articles::update);
+    tideys
+        .at("/:tidey_id")
+        .get(routes::tideys::show)
+        .delete(routes::tideys::delete)
+        .put(routes::tideys::update)
+        .post(routes::tideys::update);
 
     app.listen("127.0.0.1:8000").await?;
     Ok(())
