@@ -1,0 +1,14 @@
+{% extends "layout.html" %} {% block title %}Tideys{% endblock %} {% block
+content %}
+<h1>Tideys</h1>
+
+<ul>
+  {% for tidey in tideys %}
+  <li>
+    <a href="/tideys/{{tidey.id}}"> {{tidey.body}} </a>
+  </li>
+  {% endfor %}
+</ul>
+
+<a href="/tideys/new">new tidey</a>
+{% endblock %}
